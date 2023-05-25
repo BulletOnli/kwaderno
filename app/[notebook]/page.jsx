@@ -1,25 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
-import { useStore } from "@/store";
 import NewNoteModal from "@/components/NewNoteModal";
 import { useDisclosure } from "@chakra-ui/react";
+import { useNoteStore } from "@store/note/noteStore";
 
 const NotebookPage = ({ params }) => {
+    const notebookName = params.notebook.replace(/%20/g, " ");
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const notes = useStore((store) => store.notes);
-
-    //todo Remove the %20 on the url params
-    const notebookName = params.notebook.replace(/%20/g, " ");
-    //* Filtered notes - Notes based on the Notebook name (notes inside the notebook)
+    const notes = useNoteStore((store) => store.notes);
     const filteredNotes = notes.filter(
         (note) => note.category === notebookName
     );
 
     return (
-        <div className="w-full flex flex-col items-center gap-8 p-8">
+        <div className="w-full max-w-[1200px] mx-auto flex flex-col items-center gap-8 p-8">
             <div className="w-full flex border-[1px] border-[#6D6D6D] rounded-lg py-6 px-12">
                 <div className="w-full flex flex-col justify-center">
                     <h1 className="text-4xl font-bold">{notebookName}</h1>
@@ -40,7 +36,7 @@ const NotebookPage = ({ params }) => {
                 </div>
             </div>
 
-            <div className="w-full h-full flex flex-wrap gap-6 ">
+            <div className="w-full h-full flex flex-wrap gap-6">
                 {filteredNotes.map((note) => (
                     <Link
                         href={`/${params.notebook}/${note.noteId}`}
@@ -55,20 +51,13 @@ const NotebookPage = ({ params }) => {
                 ))}
             </div>
 
-            <NewNoteModal isOpen={isOpen} onClose={onClose} />
+            <NewNoteModal
+                isOpen={isOpen}
+                onClose={onClose}
+                params={params.notebook}
+            />
         </div>
     );
-
-    // return (
-    //     <div className="p-6">
-    //         <h2>{notebookName}</h2>
-    //         {filteredNotes.map((note) => (
-    //             <Link href={`/${params.notebook}/${note.noteId}`}>
-    //                 {note.noteTitle}
-    //             </Link>
-    //         ))}
-    //     </div>
-    // );
 };
 
 export default NotebookPage;

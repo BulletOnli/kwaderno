@@ -1,14 +1,14 @@
 "use client";
-
-import { useStore } from "@/store";
+import { useNoteStore } from "@store/note/noteStore";
 import { MdModeEditOutline, MdDelete } from "react-icons/md";
 
 const NotePage = ({ params }) => {
-    const notes = useStore((store) => store.notes);
     const noteId = params.note.replace(/%20/g, " ");
 
-    const filteredNote = notes.find((note) => note.noteId === noteId);
+    const notes = useNoteStore((store) => store.notes);
+    const updateNoteBody = useNoteStore((store) => store.updateNoteBody);
 
+    const filteredNote = notes.find((note) => note.noteId === noteId);
     return (
         <div className="w-full flex flex-col gap-6 m-8 p-8 border-[1px] border-[#9F9F9F]">
             <div className="w-full flex justify-between p-6 border-b-[1px] border-[#9F9F9F]">
@@ -24,21 +24,13 @@ const NotePage = ({ params }) => {
             </div>
             <textarea
                 className="w-full h-full p-6 text-lg outline-none bg-transparent resize-none border-[1px] border-[#9F9F9F]"
-                // value={filteredNote.noteBody}
+                value={filteredNote.noteBody}
+                onChange={(e) => {
+                    updateNoteBody(e.target.value, filteredNote);
+                }}
             />
         </div>
     );
-
-    // return (
-    //     <div>
-    //         {filteredNote.map((note) => (
-    //             <div key={note.noteId}>
-    //                 <p>{note.noteTitle}</p>
-    //                 <p>{note.noteBody}</p>
-    //             </div>
-    //         ))}
-    //     </div>
-    // );
 };
 
 export default NotePage;

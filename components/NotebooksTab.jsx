@@ -1,9 +1,9 @@
 "use client";
 import Link from "next/link";
-import { useStore } from "@/store";
+import { useNotebookStore } from "@store/notebook/notebookStore";
 
 const NotebooksTab = () => {
-    const notebookList = useStore((store) => store.notebookList);
+    const notebookList = useNotebookStore((store) => store.notebookList);
 
     return (
         <ul className="mt-8 w-full flex flex-col">

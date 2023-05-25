@@ -1,3 +1,4 @@
+"use client";
 import {
     Modal,
     ModalOverlay,
@@ -11,8 +12,14 @@ import {
     FormLabel,
     Input,
 } from "@chakra-ui/react";
+import { useNoteStore } from "@store/note/noteStore";
+import { useState } from "react";
 
-const NewNoteModal = ({ isOpen, onClose }) => {
+const NewNoteModal = ({ isOpen, onClose, params }) => {
+    const [title, setTitle] = useState("");
+
+    const createNote = useNoteStore((store) => store.createNote);
+
     return (
         <>
             <Modal isOpen={isOpen} onClose={onClose}>
@@ -22,14 +29,23 @@ const NewNoteModal = ({ isOpen, onClose }) => {
                     <ModalCloseButton />
                     <ModalBody>
                         <FormControl>
-                            <Input placeholder="Input note title" />
+                            <Input
+                                placeholder="Input note title"
+                                autoComplete="off"
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                            />
                         </FormControl>
                     </ModalBody>
 
                     <ModalFooter>
                         <Button
                             colorScheme="facebook"
-                            onClick={onClose}
+                            onClick={() => {
+                                createNote(title, params);
+                                setTitle("");
+                                onClose();
+                            }}
                             mx="auto"
                         >
                             Create Note
