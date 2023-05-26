@@ -22,6 +22,16 @@ const notebookStore = (set, get) => ({
             notebookList: [newNotebook, ...state.notebookList],
         }));
     },
+    deleteNotebook: (title) => {
+        const updateNotebooks = get().notebookList.filter(
+            (notebook) => notebook.notebookTitle !== title
+        );
+
+        set((state) => ({
+            ...state,
+            notebookList: updateNotebooks,
+        }));
+    },
 });
 
 export const useNotebookStore = create(notebookStore);

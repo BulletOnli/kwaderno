@@ -2,7 +2,14 @@ import { nanoid } from "nanoid";
 import { create } from "zustand";
 
 const noteStore = (set, get) => ({
-    notes: [],
+    notes: [
+        {
+            noteTitle: "Sample note",
+            noteBody: "qweqweq",
+            noteId: "Coding Book",
+            category: "Coding Book",
+        },
+    ],
     createNote: (title, category) => {
         const fixedCategory = category.replace(/%20/g, " ");
 
