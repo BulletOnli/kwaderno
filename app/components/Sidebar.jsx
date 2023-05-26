@@ -1,5 +1,5 @@
 "use client";
-
+import "../../app/globals.css";
 import Link from "next/link";
 import NotebooksTab from "./NotebooksTab";
 import { Spacer, useDisclosure } from "@chakra-ui/react";
@@ -20,8 +20,10 @@ import {
     Button,
     Icon,
 } from "@chakra-ui/react";
+import { usePathname } from "next/navigation";
 
 const Sidebar = () => {
+    const pathname = usePathname();
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     return (
@@ -31,16 +33,20 @@ const Sidebar = () => {
                     <Link href="/">Kwaderno</Link>
                 </h1>
                 <button
-                    className="w-full bg-[#3E3D72] p-2 rounded-md font-semibold border-[1px] border-[#6D6D6D]"
+                    className="w-full bg-[#3E3D72] p-2 rounded-md font-bold border-[1px] border-[#6D6D6D]"
                     onClick={onOpen}
                 >
                     Create Notebook
                 </button>
             </div>
 
-            <div className="w-full flex flex-col gap-1 mt-12 font-bold ">
+            <div className="w-full flex flex-col gap-1 mt-12 font-bold">
                 <Link href="/">
-                    <div className="w-full bg-[#343541] text-center text-[1.2rem] p-2 my-1 rounded-md">
+                    <div
+                        className={`${
+                            pathname === "/" ? "activeTab" : ""
+                        } w-full bg-[#343541] text-center text-[1.2rem] p-2 my-1 rounded-md`}
+                    >
                         Homepage
                     </div>
                 </Link>
@@ -52,6 +58,7 @@ const Sidebar = () => {
                                 bg: "#343541",
                             }}
                             rounded="6px"
+                            position="relative"
                         >
                             <Box
                                 as="span"
@@ -61,7 +68,7 @@ const Sidebar = () => {
                             >
                                 Notebooks
                             </Box>
-                            <AccordionIcon />
+                            <AccordionIcon position="absolute" right="1rem" />
                         </AccordionButton>
 
                         <AccordionPanel pb={4}>
@@ -70,7 +77,11 @@ const Sidebar = () => {
                     </AccordionItem>
                 </Accordion>
                 <Link href="/bookmarks">
-                    <div className="w-full bg-[#343541] text-center text-[1.2rem] p-2 my-1 rounded-md">
+                    <div
+                        className={`${
+                            pathname === "/bookmarks" ? "activeTab" : ""
+                        } w-full bg-[#343541] text-center text-[1.2rem] p-2 my-1 rounded-md`}
+                    >
                         Bookmarks
                     </div>
                 </Link>

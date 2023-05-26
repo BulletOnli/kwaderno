@@ -10,6 +10,10 @@
     margin: 0 auto;
 }
 
+.activeTab {
+    background-color: #4a4b57;
+}
+
 .loader {
     width: 100%;
     height: 100vh;
