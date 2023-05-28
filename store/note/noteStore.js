@@ -24,15 +24,27 @@ const noteStore = (set, get) => ({
             notes: [...state.notes, newNote],
         }));
     },
+    updateNoteTitle: (inputValue, prevNote) => {
+        const deletePreviousNote = get().notes.filter(
+            (note) => note.noteId !== prevNote.noteId
+        );
+        const updatedNote = {
+            ...prevNote,
+            noteTitle: inputValue,
+        };
+
+        set((state) => ({
+            ...state,
+            notes: [updatedNote, ...deletePreviousNote],
+        }));
+    },
     updateNoteBody: (inputValue, prevNote) => {
         const deletePreviousNote = get().notes.filter(
             (note) => note.noteId !== prevNote.noteId
         );
         const updatedNote = {
-            noteTitle: prevNote.noteTitle,
+            ...prevNote,
             noteBody: inputValue,
-            noteId: prevNote.noteId,
-            category: prevNote.category,
         };
 
         set((state) => ({

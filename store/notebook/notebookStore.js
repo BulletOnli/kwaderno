@@ -5,18 +5,24 @@ const notebookStore = (set, get) => ({
     notebookList: [
         {
             notebookTitle: "Coding Book",
+            notebookDescription: "coding book desc",
             notebookId: "Sample book 1 ID",
         },
         {
             notebookTitle: "Motivational Book",
+            notebookDescription: "Motivational book sfsdlkfjljlwerjkl",
             notebookId: "Sample book 2 ID",
         },
     ],
-    createNotebook: (title) => {
+    createNotebook: (title, description) => {
         const newNotebook = {
             notebookTitle: title,
+            notebookDescription: description,
             notebookId: nanoid(),
         };
+
+        if (title === "") return;
+
         set((state) => ({
             ...state,
             notebookList: [newNotebook, ...state.notebookList],

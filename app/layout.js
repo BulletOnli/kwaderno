@@ -3,8 +3,12 @@
 import Sidebar from "@app/components/Sidebar";
 import { ChakraProvider } from "@chakra-ui/react";
 import "./globals.css";
+import { usePathname } from "next/navigation";
 
 export default function RootLayout({ children }) {
+    const pathname = usePathname();
+    const hideSidebar = pathname === "/login";
+
     return (
         <html lang="en">
             <head>
@@ -13,7 +17,7 @@ export default function RootLayout({ children }) {
             <body>
                 <ChakraProvider>
                     <div className="App">
-                        <Sidebar />
+                        {!hideSidebar && <Sidebar />}
                         {children}
                     </div>
                 </ChakraProvider>

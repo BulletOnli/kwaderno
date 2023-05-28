@@ -16,6 +16,7 @@ import { useNotebookStore } from "@store/notebook/notebookStore";
 
 const NewNotebookModal = ({ isOpen, onClose }) => {
     const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
 
     const createNotebook = useNotebookStore((store) => store.createNotebook);
 
@@ -29,20 +30,28 @@ const NewNotebookModal = ({ isOpen, onClose }) => {
                     <ModalBody>
                         <FormControl>
                             <Input
-                                placeholder="Input notebook title"
+                                placeholder="Title"
                                 autoComplete="off"
                                 value={title}
+                                mb={3}
                                 onChange={(e) => setTitle(e.target.value)}
+                            />
+                            <Input
+                                placeholder="Description"
+                                autoComplete="off"
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
                             />
                         </FormControl>
                     </ModalBody>
 
                     <ModalFooter>
                         <Button
-                            colorScheme="facebook"
+                            colorScheme="blue"
                             onClick={() => {
-                                createNotebook(title);
+                                createNotebook(title, description);
                                 setTitle("");
+                                setDescription("");
                                 onClose();
                             }}
                             mx="auto"

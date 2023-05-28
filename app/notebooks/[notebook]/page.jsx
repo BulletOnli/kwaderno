@@ -1,11 +1,11 @@
 "use client";
 import Link from "next/link";
 import { Suspense } from "react";
-import NewNoteModal from "@app/components/modals/NewNoteModal";
-import { useDisclosure } from "@chakra-ui/react";
+import { useDisclosure, Button } from "@chakra-ui/react";
 import { useNoteStore } from "@store/note/noteStore";
 import { useNotebookStore } from "@store/notebook/notebookStore";
 import { useRouter } from "next/navigation";
+import NewNoteModal from "@app/components/modals/NewNoteModal";
 
 const NotebookPage = ({ params }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -17,33 +17,43 @@ const NotebookPage = ({ params }) => {
         (note) => note.category === notebookName
     );
 
+    const notebookList = useNotebookStore((store) => store.notebookList);
     const deleteNotebook = useNotebookStore((store) => store.deleteNotebook);
+    const notebookDescription = notebookList.find(
+        (book) => book.notebookTitle === notebookName
+    ).notebookDescription;
 
     return (
-        <div className="w-full flex flex-col items-center gap-8 p-8">
-            <header className="w-full flex border-[1px] border-[#6D6D6D] rounded-lg py-6 px-12">
+        <div className="w-full flex flex-col items-center gap-8 p-12">
+            <header className="relative w-full flex border-[1px] border-[#6D6D6D] rounded-lg py-6 px-12">
                 <div className="w-full flex flex-col justify-center">
                     <h1 className="text-4xl font-bold">{notebookName}</h1>
-                    <small className="mt-3 ml-8">
-                        A short description dfsfsdkfshkheqwoeisfkljs
+                    <small className="text-base mt-3 ml-6">
+                        {notebookDescription}
                     </small>
                 </div>
-                <div className="flex flex-col gap-2">
-                    <button
-                        className="w-[12rem] bg-[#3E3D72] p-2 rounded-md font-semibold border-[1px] border-[#6D6D6D]"
+                <div className="w-[12rem] flex flex-col gap-2">
+                    <Button
+                        colorScheme="blue"
+                        w="full"
+                        size="md"
+                        boxShadow="base"
                         onClick={onOpen}
                     >
                         New Note
-                    </button>
-                    <button
-                        className="w-[12rem] bg-[#9E3138] p-2 rounded-md font-semibold border-[1px] border-[#6D6D6D]"
+                    </Button>
+                    <Button
+                        colorScheme="red"
+                        w="full"
+                        size="md"
+                        boxShadow="base"
                         onClick={() => {
                             deleteNotebook(notebookName);
                             router.push("/");
                         }}
                     >
                         Delete Notebook
-                    </button>
+                    </Button>
                 </div>
             </header>
             <Suspense fallback={<div>Loading notes...</div>}>
