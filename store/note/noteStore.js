@@ -71,7 +71,7 @@ const noteStore = (set, get) => ({
         const amPm = new Date()
             .toLocaleTimeString()
             .split("")
-            .slice(9, 11)
+            .slice(8, 11)
             .join()
             .replace(/,/g, "");
 

@@ -38,7 +38,7 @@ const BookmarksPage = () => {
                                 <Link
                                     href={`/notebooks/${bookmark.category}/${bookmark.noteId}`}
                                 >
-                                    <h2 className="text-2xl font-bold">
+                                    <h2 className="text-2xl font-bold hover:underline">
                                         {bookmark.noteTitle}
                                     </h2>
                                     <small className="ml-5 text-gray-200">

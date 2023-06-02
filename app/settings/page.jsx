@@ -24,7 +24,7 @@ const SettingsPage = () => {
                 {isEditing ? "Save Changes" : "Edit Profile"}
             </Button>
 
-            <div className="w-[35rem] h-[50rem] flex flex-col items-center p-8">
+            <div className="w-[35rem] h-[80%] flex flex-col items-center p-8">
                 <Avatar size="2xl" name={username} src="" />
                 <input
                     className={`text-center text-3xl font-bold my-4 bg-transparent outline-none ${

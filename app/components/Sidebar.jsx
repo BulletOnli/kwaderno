@@ -100,12 +100,10 @@ const Sidebar = () => {
                     <Avatar size="sm" name={username} />
                     <Text fontWeight="semibold">{username}</Text>
                 </HStack>
-                <Link href="/login">
-                    <Button colorScheme="red" size="md" w="100%">
-                        Log out
-                        <Icon as={FiLogOut} ml="8px" />
-                    </Button>
-                </Link>
+                <Button colorScheme="red" size="md" w="100%">
+                    Log out
+                    <Icon as={FiLogOut} ml="8px" />
+                </Button>
             </Flex>
 
             <NewNotebookModal isOpen={isOpen} onClose={onClose} />
