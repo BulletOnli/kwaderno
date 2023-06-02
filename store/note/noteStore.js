@@ -7,13 +7,13 @@ const noteStore = (set, get) => ({
             noteTitle: "Sample note",
             noteBody: "qweqweq",
             noteId: "Coding Book",
-            category: "Coding Book",
+            category: "Coding",
         },
         {
             noteTitle: "Sample note 2",
             noteBody: "qeqweq123123",
             noteId: "Coding Book 2",
-            category: "Coding Book",
+            category: "Coding",
         },
     ],
     createNote: (title, category) => {
@@ -68,7 +68,12 @@ const noteStore = (set, get) => ({
             .slice(0, 5)
             .join()
             .replace(/,/g, "");
-        const amPm = new Date().toLocaleTimeString().split("").slice(0, 5);
+        const amPm = new Date()
+            .toLocaleTimeString()
+            .split("")
+            .slice(9, 11)
+            .join()
+            .replace(/,/g, "");
 
         return `${currentTime} ${amPm} | ${currentDate}`;
     },

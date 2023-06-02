@@ -42,16 +42,13 @@ const BookmarksPage = () => {
                                         {bookmark.noteTitle}
                                     </h2>
                                     <small className="ml-5 text-gray-200">
-                                        From: {bookmark.category}
+                                        From: {bookmark.category} Notebook
                                     </small>
                                 </Link>
                             </span>
                             <FaTrash
                                 className="text-lg cursor-pointer"
-                                onClick={() => {
-                                    removeBookmark(bookmark);
-                                    console.log(bookmark);
-                                }}
+                                onClick={() => removeBookmark(bookmark)}
                             />
                         </div>
                     ))

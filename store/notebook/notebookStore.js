@@ -4,14 +4,14 @@ import { create } from "zustand";
 const notebookStore = (set, get) => ({
     notebookList: [
         {
-            notebookTitle: "Coding Book",
+            notebookTitle: "Coding",
             notebookDescription: "coding book desc",
-            notebookId: "Sample book 1 ID",
+            notebookId: "Coding",
         },
         {
-            notebookTitle: "Motivational Book",
+            notebookTitle: "Motivational",
             notebookDescription: "Motivational book sfsdlkfjljlwerjkl",
-            notebookId: "Sample book 2 ID",
+            notebookId: "Motivational",
         },
     ],
     createNotebook: (title, description) => {
