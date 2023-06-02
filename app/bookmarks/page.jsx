@@ -1,7 +1,13 @@
+"use client";
 import { FaTrash } from "react-icons/fa";
 import { BsDot } from "react-icons/bs";
+import { useBookmarkStore } from "@store/bookmark/bookmarkStore";
+import Link from "next/link";
 
 const BookmarksPage = () => {
+    const bookmarks = useBookmarkStore((store) => store.bookmarks);
+    const removeBookmark = useBookmarkStore((store) => store.removeBookmark);
+
     return (
         <div className="w-full flex flex-col items-center p-8">
             <header className="relative w-full flex justify-center items-center p-6 rounded-lg bg-[#4A4B57] shadow-custom">
@@ -17,34 +23,43 @@ const BookmarksPage = () => {
                     <BsDot className="text-[5rem] mx-[-1rem]" />
                 </div>
             </header>
+
             <div className="w-full h-full flex flex-col items-center gap-4 mt-14">
-                {/* bookmark */}
-                <div className="w-[40rem] flex items-center py-4 px-8 rounded-md bg-[#4A4B57] shadow-custom">
-                    <p className="text-xl font-semibold">1.</p>
-                    <span className="w-full mx-8">
-                        <h2 className="text-2xl font-bold">Note 1</h2>
-                        <small className="ml-2">from notebook 1</small>
-                    </span>
-                    <FaTrash className="text-lg cursor-pointer" />
-                </div>
-
-                <div className="w-[40rem] flex items-center py-4 px-8 rounded-md bg-[#4A4B57] shadow-custom">
-                    <p className="text-xl font-semibold">1.</p>
-                    <span className="w-full mx-8">
-                        <h2 className="text-2xl font-bold">Note 1</h2>
-                        <small className="ml-2">from notebook 1</small>
-                    </span>
-                    <FaTrash className="text-lg cursor-pointer" />
-                </div>
-
-                <div className="w-[40rem] flex items-center py-4 px-8 rounded-md bg-[#4A4B57] shadow-custom">
-                    <p className="text-xl font-semibold">1.</p>
-                    <span className="w-full mx-8">
-                        <h2 className="text-2xl font-bold">Note 1</h2>
-                        <small className="ml-2">from notebook 1</small>
-                    </span>
-                    <FaTrash className="text-lg cursor-pointer" />
-                </div>
+                {bookmarks.length > 0 ? (
+                    bookmarks.map((bookmark, index) => (
+                        <div
+                            className="w-[40rem] flex items-center py-4 px-8 rounded-lg bg-[#4A4B57] shadow-custom"
+                            key={bookmark.noteId}
+                        >
+                            <p className="text-xl font-semibold">
+                                {index + 1}.
+                            </p>
+                            <span className="w-full mx-8">
+                                <Link
+                                    href={`/notebooks/${bookmark.category}/${bookmark.noteId}`}
+                                >
+                                    <h2 className="text-2xl font-bold">
+                                        {bookmark.noteTitle}
+                                    </h2>
+                                    <small className="ml-5 text-gray-200">
+                                        From: {bookmark.category}
+                                    </small>
+                                </Link>
+                            </span>
+                            <FaTrash
+                                className="text-lg cursor-pointer"
+                                onClick={() => {
+                                    removeBookmark(bookmark);
+                                    console.log(bookmark);
+                                }}
+                            />
+                        </div>
+                    ))
+                ) : (
+                    <p className="text-2xl text-gray-300 my-auto ">
+                        No bookmarks found
+                    </p>
+                )}
             </div>
         </div>
     );

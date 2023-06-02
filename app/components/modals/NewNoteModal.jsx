@@ -28,7 +28,7 @@ const NewNoteModal = ({ isOpen, onClose, params }) => {
                     <ModalHeader>New Note</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        <FormControl>
+                        <FormControl onSubmit={() => console.log("h")}>
                             <Input
                                 placeholder="Input note title"
                                 autoComplete="off"
@@ -40,6 +40,7 @@ const NewNoteModal = ({ isOpen, onClose, params }) => {
 
                     <ModalFooter>
                         <Button
+                            type="submit"
                             colorScheme="facebook"
                             onClick={() => {
                                 createNote(title, params);

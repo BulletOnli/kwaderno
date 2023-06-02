@@ -24,9 +24,10 @@ const Homepage = () => {
                 </div>
             </div>
             <div className="w-[70rem] flex items-center justify-between p-6 bg-[#4A4B57] mt-2 rounded-lg shadow-md">
-                <div className="w-[15rem] h-[8rem] bg-[#BEC1C3] rounded-md hover:shadow-custom"></div>
-                <div className="w-[15rem] h-[8rem] bg-[#BEC1C3] rounded-md hover:shadow-custom"></div>
-                <div className="w-[15rem] h-[8rem] bg-[#BEC1C3] rounded-md hover:shadow-custom"></div>
+                <div className="w-[13rem] h-[7rem] bg-[#BEC1C3] rounded-md hover:shadow-custom"></div>
+                <div className="w-[13rem] h-[7rem] bg-[#BEC1C3] rounded-md hover:shadow-custom"></div>
+                <div className="w-[13rem] h-[7rem] bg-[#BEC1C3] rounded-md hover:shadow-custom"></div>
+                <div className="w-[13rem] h-[7rem] bg-[#BEC1C3] rounded-md hover:shadow-custom"></div>
             </div>
         </div>
     );

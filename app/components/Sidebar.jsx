@@ -20,16 +20,17 @@ import {
 } from "@chakra-ui/react";
 import {
     BsFillBookmarkStarFill,
-    BsFillGearFill,
     BsFillTrash2Fill,
     BsFillPersonFill,
 } from "react-icons/bs";
 import { AiFillHome, AiFillBook } from "react-icons/ai";
 import { FiLogOut } from "react-icons/fi";
 import SidebarTab from "./SidebarTab";
+import { useUserStore } from "@store/user/userStore";
 
 const Sidebar = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const username = useUserStore((store) => store.username);
 
     return (
         <div className="w-[20rem] text-white min-w-[20rem] h-screen bg-[#202123] flex flex-col items-center p-4">
@@ -93,15 +94,18 @@ const Sidebar = () => {
                 />
             </div>
             <Spacer />
+
             <Flex w="full" flexDirection="column">
                 <HStack mb="15px">
-                    <Avatar size="sm" />
-                    <Text fontWeight="semibold">User</Text>
+                    <Avatar size="sm" name={username} />
+                    <Text fontWeight="semibold">{username}</Text>
                 </HStack>
-                <Button colorScheme="red" size="md" w="100%">
-                    Log out
-                    <Icon as={FiLogOut} ml="8px" />
-                </Button>
+                <Link href="/login">
+                    <Button colorScheme="red" size="md" w="100%">
+                        Log out
+                        <Icon as={FiLogOut} ml="8px" />
+                    </Button>
+                </Link>
             </Flex>
 
             <NewNotebookModal isOpen={isOpen} onClose={onClose} />
