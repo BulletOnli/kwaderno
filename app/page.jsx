@@ -1,23 +1,36 @@
+"use client";
 import Link from "next/link";
 import { BsFacebook, BsInstagram, BsGithub, BsTwitter } from "react-icons/bs";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const Homepage = () => {
+    const router = useRouter();
+    // if the user is not logged in, direct the user to login page
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        if (!isLoggedIn) {
+            router.push("/login");
+        }
+    }, [isLoggedIn, router]);
+
     return (
         <div className="w-full h-screen flex flex-col items-center p-8 ">
             <div className="w-full h-full flex items-center">
                 <div className="w-[50%] h-full p-8 flex justify-center items-center">
                     <div className="w-full flex flex-col items-center text-center">
-                        <h1 className="text-7xl font-bold">Kwaderno</h1>
-                        <p className="text-lg w-[80%] text-[#BEC1C3] my-6">
-                            Kwaderno is a powerful web app designed to
+                        <h1 className="text-6xl font-bold mb-7">Kwadernote</h1>
+                        <p className="text-lg text-[#BEC1C3]">
+                            Kwadernote is a powerful web app designed to
                             revolutionize the way you capture and organize your
-                            notes. With Kwaderno, your notes are seamlessly
+                            notes. With Kwadernote, your notes are seamlessly
                             stored in a virtual notebook, making it easy to keep
                             track of your thoughts, ideas, and important
                             information.
                         </p>
 
-                        <div className="w-full flex flex-col items-center justify-center">
+                        <div className="w-full flex flex-col items-center justify-center mt-6">
                             <p className="font-medium mb-3">Follow us:</p>
                             <div className="w-full text-xl flex items-center justify-center gap-4">
                                 <Link
@@ -43,16 +56,10 @@ const Homepage = () => {
                         </div>
                     </div>
                 </div>
-                <div className="w-[50%] h-full flex justify-center">
-                    <img
-                        className="w-[45rem]"
-                        src="/images/typing.svg"
-                        alt=""
-                    />
-                </div>
+                <img className="w-[50%]" src="/images/typing.svg" alt="" />
             </div>
 
-            <div className="w-full flex items-center justify-center gap-14 mt-2 rounded-lg">
+            <div className="w-full flex items-center justify-center gap-16 rounded-lg">
                 <div className="w-[17rem] h-[9rem] p-3 flex justify-center items-center bg-[#343541] rounded-xl shadow-custom2">
                     <div className="w-full h-full flex flex-col items-center text-center p-2 rounded-lg border border-white">
                         <h2 className="text-2xl font-bold my-2">Notebooks</h2>

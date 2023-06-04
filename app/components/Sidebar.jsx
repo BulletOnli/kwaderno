@@ -2,7 +2,6 @@
 import "../../app/globals.css";
 import Link from "next/link";
 import NotebooksTab from "./NotebooksTab";
-import { Spacer, useDisclosure } from "@chakra-ui/react";
 import NewNotebookModal from "./modals/NewNotebookModal";
 import {
     Accordion,
@@ -17,6 +16,8 @@ import {
     Text,
     Button,
     Icon,
+    Spacer,
+    useDisclosure,
 } from "@chakra-ui/react";
 import {
     BsFillBookmarkStarFill,
@@ -100,10 +101,12 @@ const Sidebar = () => {
                     <Avatar size="sm" name={username} />
                     <Text fontWeight="semibold">{username}</Text>
                 </HStack>
-                <Button colorScheme="red" size="md" w="100%">
-                    Log out
-                    <Icon as={FiLogOut} ml="8px" />
-                </Button>
+                <Link href="/login">
+                    <Button colorScheme="red" size="md" w="100%">
+                        Log out
+                        <Icon as={FiLogOut} ml="8px" />
+                    </Button>
+                </Link>
             </Flex>
 
             <NewNotebookModal isOpen={isOpen} onClose={onClose} />

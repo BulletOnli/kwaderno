@@ -53,7 +53,7 @@ const BookmarksPage = () => {
                         </div>
                     ))
                 ) : (
-                    <p className="text-2xl text-gray-300 my-auto ">
+                    <p className="text-2xl text-gray-300 mt-12 ">
                         No bookmarks found
                     </p>
                 )}
