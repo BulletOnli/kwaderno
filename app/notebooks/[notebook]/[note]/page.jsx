@@ -12,8 +12,8 @@ const NotePage = ({ params }) => {
 
     const { notes, updateNoteTitle, updateNoteBody } = useNoteStore();
     const filteredNote = notes.find((note) => note.noteId === noteId);
-
     const { addToBookmark, removeBookmark } = useBookmarkStore();
+
     return (
         <div className="relative w-full flex flex-col gap-6 m-10 p-10 border-[2px] border-[#9F9F9F]">
             <AiOutlineArrowLeft

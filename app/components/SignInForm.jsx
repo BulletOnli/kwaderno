@@ -3,8 +3,25 @@ import Link from "next/link";
 import { FormControl, FormLabel, Input, Button } from "@chakra-ui/react";
 import { BsFacebook, BsGithub } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-const SignInForm = ({ setShowSignup }) => {
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase-config";
+
+const SignInForm = ({ setShowSignup, googleLogin }) => {
+    const router = useRouter();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const signIn = () => {
+        signInWithEmailAndPassword(auth, email, password)
+            .then(() => {
+                router.push("/");
+            })
+            .catch((error) => console.log("wrong email/password"));
+    };
+
     return (
         <div className="w-[32rem] flex flex-col items-center justify-center bg-[#faf9f9] rounded-xl p-12">
             <h1 className="w-full text-3xl font-bold mb-2">Sign in</h1>
@@ -19,11 +36,21 @@ const SignInForm = ({ setShowSignup }) => {
             </p>
             <FormControl>
                 <FormLabel>Email address</FormLabel>
-                <Input type="email" mb={3} />
+                <Input
+                    type="email"
+                    mb={3}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
 
                 <FormLabel>Password</FormLabel>
-                <Input type="password" mb={3} />
-                <Button colorScheme="messenger" w="full">
+                <Input
+                    type="password"
+                    mb={3}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                <Button colorScheme="messenger" w="full" onClick={signIn}>
                     Sign in
                 </Button>
             </FormControl>
@@ -36,6 +63,7 @@ const SignInForm = ({ setShowSignup }) => {
                 rounded="md"
                 variant="outline"
                 leftIcon={<FcGoogle />}
+                onClick={googleLogin}
             >
                 Continue with Google
             </Button>

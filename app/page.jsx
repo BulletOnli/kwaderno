@@ -1,20 +1,8 @@
 "use client";
 import Link from "next/link";
 import { BsFacebook, BsInstagram, BsGithub, BsTwitter } from "react-icons/bs";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 
 const Homepage = () => {
-    const router = useRouter();
-    // if the user is not logged in, direct the user to login page
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-    useEffect(() => {
-        if (!isLoggedIn) {
-            router.push("/login");
-        }
-    }, [isLoggedIn, router]);
-
     return (
         <div className="w-full h-screen flex flex-col items-center p-8 ">
             <div className="w-full h-full flex items-center">

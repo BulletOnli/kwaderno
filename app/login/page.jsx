@@ -1,11 +1,39 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SignInForm from "@app/components/SignInForm";
 import SignUpForm from "@app/components/SignUpForm";
 
+import { useRouter } from "next/navigation";
+
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../firebase-config";
+import { useAuthStore } from "@store/auth/authStore";
+
 const loginPage = () => {
+    const router = useRouter();
+    const [user] = useAuthState(auth);
+
     const [showSignup, setShowSignup] = useState(false);
+    const googleProvider = new GoogleAuthProvider();
+
+    const checkAuthChanges = useAuthStore((store) => store.checkAuthChanges);
+
+    const googleLogin = () => {
+        signInWithPopup(auth, googleProvider)
+            .then(() => {
+                router.push("/");
+            })
+            .catch((error) => console.log(error));
+    };
+
+    useEffect(() => {
+        if (user) {
+            router.push("/");
+        }
+        checkAuthChanges();
+    }, [user]);
 
     return (
         <div className="text-black w-full h-screen flex items-center justify-center p-10">
@@ -17,9 +45,15 @@ const loginPage = () => {
             </div>
             <div className="w-[50%] flex justify-center items-center">
                 {!showSignup ? (
-                    <SignInForm setShowSignup={setShowSignup} />
+                    <SignInForm
+                        setShowSignup={setShowSignup}
+                        googleLogin={googleLogin}
+                    />
                 ) : (
-                    <SignUpForm setShowSignup={setShowSignup} />
+                    <SignUpForm
+                        setShowSignup={setShowSignup}
+                        googleLogin={googleLogin}
+                    />
                 )}
             </div>
         </div>

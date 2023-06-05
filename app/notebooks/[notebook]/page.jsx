@@ -1,11 +1,12 @@
 "use client";
 import Link from "next/link";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import { useDisclosure, Button } from "@chakra-ui/react";
 import { useNoteStore } from "@store/note/noteStore";
 import { useNotebookStore } from "@store/notebook/notebookStore";
 import { useRouter } from "next/navigation";
 import NewNoteModal from "@app/components/modals/NewNoteModal";
+import { useAuthStore } from "@store/auth/authStore";
 
 const NotebookPage = ({ params }) => {
     const router = useRouter();

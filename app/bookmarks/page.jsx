@@ -5,8 +5,7 @@ import { useBookmarkStore } from "@store/bookmark/bookmarkStore";
 import Link from "next/link";
 
 const BookmarksPage = () => {
-    const bookmarks = useBookmarkStore((store) => store.bookmarks);
-    const removeBookmark = useBookmarkStore((store) => store.removeBookmark);
+    const { bookmarks, removeBookmark } = useBookmarkStore();
 
     return (
         <div className="w-full flex flex-col items-center p-8">

@@ -1,6 +1,7 @@
 "use client";
 import "../../app/globals.css";
 import Link from "next/link";
+import { useEffect } from "react";
 import NotebooksTab from "./NotebooksTab";
 import NewNotebookModal from "./modals/NewNotebookModal";
 import {
@@ -27,11 +28,33 @@ import {
 import { AiFillHome, AiFillBook } from "react-icons/ai";
 import { FiLogOut } from "react-icons/fi";
 import SidebarTab from "./SidebarTab";
-import { useUserStore } from "@store/user/userStore";
+
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../firebase-config";
+import { signOut } from "firebase/auth";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@store/auth/authStore";
 
 const Sidebar = () => {
+    const router = useRouter();
+    const [user, loading, error] = useAuthState(auth);
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const username = useUserStore((store) => store.username);
+    const { userDetails, checkAuthChanges } = useAuthStore();
+
+    const userSignOut = () => {
+        signOut(auth)
+            .then(() => {
+                router.push("/login");
+            })
+            .catch((err) => console.log(err));
+    };
+
+    useEffect(() => {
+        if (!user) {
+            router.push("/login");
+        }
+        checkAuthChanges();
+    }, [user]);
 
     return (
         <div className="w-[20rem] text-white min-w-[20rem] h-screen bg-[#202123] flex flex-col items-center p-4">
@@ -98,15 +121,24 @@ const Sidebar = () => {
 
             <Flex w="full" flexDirection="column">
                 <HStack mb="15px">
-                    <Avatar size="sm" name={username} />
-                    <Text fontWeight="semibold">{username}</Text>
+                    <Avatar
+                        size="sm"
+                        name={userDetails.displayName || userDetails.email}
+                        src={userDetails.photoURL}
+                    />
+                    <Text fontWeight="semibold">
+                        {userDetails.displayName || userDetails.email}
+                    </Text>
                 </HStack>
-                <Link href="/login">
-                    <Button colorScheme="red" size="md" w="100%">
-                        Log out
-                        <Icon as={FiLogOut} ml="8px" />
-                    </Button>
-                </Link>
+                <Button
+                    colorScheme="red"
+                    size="md"
+                    w="100%"
+                    onClick={userSignOut}
+                >
+                    Log out
+                    <Icon as={FiLogOut} ml="8px" />
+                </Button>
             </Flex>
 
             <NewNotebookModal isOpen={isOpen} onClose={onClose} />
