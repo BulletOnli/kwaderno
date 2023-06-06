@@ -5,14 +5,19 @@ import { BsBookmark, BsFillBookmarkFill } from "react-icons/bs";
 import { FaTrash } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { useBookmarkStore } from "@store/bookmark/bookmarkStore";
+import { useEffect, useState } from "react";
 
 const NotePage = ({ params }) => {
     const noteId = params.note.replace(/%20/g, " ");
     const router = useRouter();
 
-    const { notes, updateNoteTitle, updateNoteBody } = useNoteStore();
+    const { notes, updateNoteTitle, updateNoteBody, deleteNote, renderNotes } =
+        useNoteStore();
     const filteredNote = notes.find((note) => note.noteId === noteId);
     const { addToBookmark, removeBookmark } = useBookmarkStore();
+
+    const [title, setTitle] = useState(filteredNote.noteTitle);
+    const [body, setBody] = useState(filteredNote.noteBody);
 
     return (
         <div className="relative w-full flex flex-col gap-6 m-10 p-10 border-[2px] border-[#9F9F9F]">
@@ -26,19 +31,20 @@ const NotePage = ({ params }) => {
                         className="text-3xl font-bold bg-transparent outline-none"
                         type="text"
                         placeholder="Title"
-                        value={filteredNote.noteTitle}
+                        value={title}
                         onChange={(e) => {
+                            setTitle(e.target.value);
                             updateNoteTitle(e.target.value, filteredNote);
                         }}
                     />
                     <small className="ml-8 mt-2 text-gray-300 font-medium">
-                        {`Last Edited: ${filteredNote.lastEdited}`}
+                        {`Last Edited: ${filteredNote?.lastEdited}`}
                     </small>
                 </div>
 
                 <div className="flex gap-6">
                     <button className="text-2xl">
-                        {filteredNote.isBookmarked ? (
+                        {filteredNote?.isBookmarked ? (
                             <BsFillBookmarkFill
                                 onClick={() => {
                                     removeBookmark(filteredNote);
@@ -52,15 +58,22 @@ const NotePage = ({ params }) => {
                             />
                         )}
                     </button>
-                    <button className="text-2xl">
+                    <button
+                        className="text-2xl"
+                        onClick={() => {
+                            deleteNote(filteredNote?.noteId);
+                            router.back();
+                        }}
+                    >
                         <FaTrash />
                     </button>
                 </div>
             </div>
             <textarea
                 className="w-full h-full p-6 text-lg outline-none bg-transparent resize-none border-[1px] border-[#9F9F9F]"
-                value={filteredNote.noteBody}
+                value={body}
                 onChange={(e) => {
+                    setBody(e.target.value);
                     updateNoteBody(e.target.value, filteredNote);
                 }}
                 placeholder="Body"

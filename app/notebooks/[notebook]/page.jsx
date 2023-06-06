@@ -6,30 +6,35 @@ import { useNoteStore } from "@store/note/noteStore";
 import { useNotebookStore } from "@store/notebook/notebookStore";
 import { useRouter } from "next/navigation";
 import NewNoteModal from "@app/components/modals/NewNoteModal";
-import { useAuthStore } from "@store/auth/authStore";
 
 const NotebookPage = ({ params }) => {
     const router = useRouter();
     const notebookName = params.notebook.replace(/%20/g, " ");
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const notes = useNoteStore((store) => store.notes);
+    const { notes, renderNotes } = useNoteStore();
     const filteredNotes = notes.filter(
-        (note) => note.category === notebookName
+        (note) => note.category === params.notebook
     );
 
     const { notebookList, deleteNotebook } = useNotebookStore();
-    const notebookDescription = notebookList.find(
+    const thisNotebook = notebookList.find(
         (book) => book.notebookTitle === notebookName
-    ).notebookDescription;
+    );
+
+    useEffect(() => {
+        renderNotes();
+    }, []);
 
     return (
         <div className="w-full flex flex-col items-center gap-8 p-12">
             <header className="relative w-full flex border-[1px] border-[#6D6D6D] rounded-lg py-6 px-12">
                 <div className="w-full flex flex-col justify-center">
-                    <h1 className="text-4xl font-bold">{notebookName}</h1>
+                    <h1 className="text-4xl font-bold">
+                        {thisNotebook?.notebookTitle}
+                    </h1>
                     <small className="text-base mt-2 ml-6">
-                        {notebookDescription}
+                        {thisNotebook?.notebookDescription}
                     </small>
                 </div>
                 <div className="w-[12rem] flex flex-col gap-2">
@@ -48,7 +53,7 @@ const NotebookPage = ({ params }) => {
                         size="md"
                         boxShadow="base"
                         onClick={() => {
-                            deleteNotebook(notebookName);
+                            deleteNotebook(thisNotebook.notebookId);
                             router.push("/");
                         }}
                     >

@@ -10,17 +10,14 @@ import { useAuthStore } from "@store/auth/authStore";
 
 const SettingsPage = () => {
     const userDetails = useAuthStore((store) => store.userDetails);
+    const { displayName, email, photoURL } = userDetails;
 
     return (
         <div className="relative w-full flex justify-center items-center">
             <div className="w-[35rem] h-[80%] flex flex-col items-center p-8">
-                <Avatar
-                    size="2xl"
-                    name={userDetails.displayName || userDetails.email}
-                    src={userDetails.photoURL}
-                />
+                <Avatar size="2xl" name={displayName || email} src={photoURL} />
                 <h1 className="text-center text-3xl font-bold my-4 bg-transparent outline-none">
-                    {userDetails.displayName || userDetails.email}
+                    {displayName || email}
                 </h1>
                 <div className="w-full flex flex-col items-center gap-3 mt-6">
                     <SettingsTab

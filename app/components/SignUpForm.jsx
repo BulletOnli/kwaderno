@@ -1,7 +1,13 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { FormControl, FormLabel, Input, Button } from "@chakra-ui/react";
+import {
+    FormControl,
+    FormLabel,
+    Input,
+    Button,
+    useToast,
+} from "@chakra-ui/react";
 import { BsFacebook, BsGithub } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
 
@@ -9,6 +15,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase-config";
 
 const SignUpForm = ({ setShowSignup, googleLogin }) => {
+    const toast = useToast();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -16,6 +23,14 @@ const SignUpForm = ({ setShowSignup, googleLogin }) => {
         createUserWithEmailAndPassword(auth, email, password)
             .then(() => {
                 setShowSignup(false);
+                toast({
+                    title: "Account created.",
+                    description: "We've created your account for you.",
+                    status: "success",
+                    duration: 9000,
+                    isClosable: true,
+                    position: "top",
+                });
             })
             .catch((error) => {
                 console.log(error);
@@ -70,7 +85,7 @@ const SignUpForm = ({ setShowSignup, googleLogin }) => {
                 Sign up with Google
             </Button>
             <Button
-                disabled
+                isDisabled
                 w="full"
                 mb={4}
                 p={4}
@@ -81,6 +96,7 @@ const SignUpForm = ({ setShowSignup, googleLogin }) => {
                 Sign up with Facebook
             </Button>
             <Button
+                isDisabled
                 w="full"
                 mb={4}
                 p={4}

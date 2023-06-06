@@ -19,6 +19,7 @@ import {
     Icon,
     Spacer,
     useDisclosure,
+    useToast,
 } from "@chakra-ui/react";
 import {
     BsFillBookmarkStarFill,
@@ -35,19 +36,37 @@ import { signOut } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@store/auth/authStore";
 
+import { useNotebookStore } from "@store/notebook/notebookStore";
+
 const Sidebar = () => {
+    const toast = useToast();
     const router = useRouter();
-    const [user, loading, error] = useAuthState(auth);
+
+    const [user] = useAuthState(auth);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { userDetails, checkAuthChanges } = useAuthStore();
+
+    const { renderNotebooks } = useNotebookStore();
 
     const userSignOut = () => {
         signOut(auth)
             .then(() => {
-                router.push("/login");
+                toast({
+                    title: "Logout successful",
+                    description: "You have been logged out.",
+                    status: "warning",
+                    duration: 3000,
+                    isClosable: true,
+                    position: "top",
+                });
             })
             .catch((err) => console.log(err));
+        router.push("/login");
     };
+
+    useEffect(() => {
+        renderNotebooks();
+    }, []);
 
     useEffect(() => {
         if (!user) {

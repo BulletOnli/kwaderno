@@ -18,7 +18,7 @@ const NotebooksTab = () => {
                         className={`${
                             pathname ===
                             "/notebooks/" +
-                                list.notebookTitle.replace(/\s/g, "%20")
+                                list.notebookTitle?.replace(/\s/g, "%20")
                                 ? "activeTab"
                                 : ""
                         } w-full bg-[#343541] text-center text-lg p-2 my-1 rounded-md font-semibold`}

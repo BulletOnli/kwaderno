@@ -1,6 +1,12 @@
 "use client";
 import Link from "next/link";
-import { FormControl, FormLabel, Input, Button } from "@chakra-ui/react";
+import {
+    FormControl,
+    FormLabel,
+    Input,
+    Button,
+    useToast,
+} from "@chakra-ui/react";
 import { BsFacebook, BsGithub } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
 import { useRouter } from "next/navigation";
@@ -10,6 +16,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase-config";
 
 const SignInForm = ({ setShowSignup, googleLogin }) => {
+    const toast = useToast();
     const router = useRouter();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -18,6 +25,15 @@ const SignInForm = ({ setShowSignup, googleLogin }) => {
         signInWithEmailAndPassword(auth, email, password)
             .then(() => {
                 router.push("/");
+                toast({
+                    title: "Login successful",
+                    description:
+                        "Welcome back! You have successfully logged in.",
+                    status: "success",
+                    duration: 3000,
+                    isClosable: true,
+                    position: "top",
+                });
             })
             .catch((error) => console.log("wrong email/password"));
     };
@@ -68,7 +84,7 @@ const SignInForm = ({ setShowSignup, googleLogin }) => {
                 Continue with Google
             </Button>
             <Button
-                disabled
+                isDisabled
                 w="full"
                 mb={4}
                 p={4}
@@ -79,6 +95,7 @@ const SignInForm = ({ setShowSignup, googleLogin }) => {
                 Continue with Facebook
             </Button>
             <Button
+                isDisabled
                 w="full"
                 mb={4}
                 p={4}

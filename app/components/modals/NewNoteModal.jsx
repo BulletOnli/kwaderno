@@ -12,13 +12,34 @@ import {
     FormLabel,
     Input,
 } from "@chakra-ui/react";
-import { useNoteStore } from "@store/note/noteStore";
 import { useState } from "react";
+import { nanoid } from "nanoid";
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "@firebase-config";
+import { useAuthStore } from "@store/auth/authStore";
+import { useNoteStore } from "@store/note/noteStore";
 
 const NewNoteModal = ({ isOpen, onClose, params }) => {
     const [title, setTitle] = useState("");
+    const notesRef = collection(db, "notes");
+    const { userDetails } = useAuthStore();
+    const { renderNotes } = useNoteStore();
 
-    const createNote = useNoteStore((store) => store.createNote);
+    const createNote = async () => {
+        try {
+            await addDoc(notesRef, {
+                noteTitle: title,
+                noteBody: "",
+                noteId: nanoid(),
+                category: params,
+                isBookmarked: false,
+                author: userDetails.email,
+            });
+            renderNotes();
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <>
@@ -28,7 +49,7 @@ const NewNoteModal = ({ isOpen, onClose, params }) => {
                     <ModalHeader>New Note</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        <FormControl onSubmit={() => console.log("h")}>
+                        <FormControl>
                             <Input
                                 placeholder="Input note title"
                                 autoComplete="off"

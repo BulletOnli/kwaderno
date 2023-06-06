@@ -1,42 +1,42 @@
-import { nanoid } from "nanoid";
 import { create } from "zustand";
+import { nanoid } from "nanoid";
+import { db } from "@firebase-config";
+import {
+    getDocs,
+    collection,
+    deleteDoc,
+    doc,
+    addDoc,
+} from "firebase/firestore";
+import { useAuthStore } from "@store/auth/authStore";
+
+const notebooksRef = collection(db, "notebooks");
 
 const notebookStore = (set, get) => ({
-    notebookList: [
-        {
-            notebookTitle: "Coding",
-            notebookDescription: "coding book desc",
-            notebookId: "Coding",
-        },
-        {
-            notebookTitle: "Motivational",
-            notebookDescription: "Motivational book sfsdlkfjljlwerjkl",
-            notebookId: "Motivational",
-        },
-    ],
-    createNotebook: (title, description) => {
-        const newNotebook = {
-            notebookTitle: title,
-            notebookDescription: description,
-            notebookId: nanoid(),
-        };
+    notebookList: [],
+    renderNotebooks: async () => {
+        const userDetails = useAuthStore.getState().userDetails;
+        try {
+            const data = await getDocs(notebooksRef);
+            const filteredData = data.docs
+                .map((doc) => ({
+                    ...doc.data(),
+                    notebookId: doc.id,
+                }))
+                .filter((doc) => doc.author === userDetails.email);
 
-        if (title === "") return;
-
-        set((state) => ({
-            ...state,
-            notebookList: [newNotebook, ...state.notebookList],
-        }));
+            set((state) => ({
+                ...state,
+                notebookList: filteredData,
+            }));
+        } catch (error) {
+            console.log(error);
+        }
     },
-    deleteNotebook: (title) => {
-        const updateNotebooks = get().notebookList.filter(
-            (notebook) => notebook.notebookTitle !== title
-        );
-
-        set((state) => ({
-            ...state,
-            notebookList: updateNotebooks,
-        }));
+    deleteNotebook: async (id) => {
+        const notebookDoc = doc(db, "notebooks", id);
+        await deleteDoc(notebookDoc);
+        get().renderNotebooks();
     },
 });
 

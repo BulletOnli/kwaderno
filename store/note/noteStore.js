@@ -1,36 +1,40 @@
-import { nanoid } from "nanoid";
 import { create } from "zustand";
 
-const noteStore = (set, get) => ({
-    notes: [
-        {
-            noteTitle: "Sample note",
-            noteBody: "qweqweq",
-            noteId: "Coding Book",
-            category: "Coding",
-        },
-        {
-            noteTitle: "Sample note 2",
-            noteBody: "qeqweq123123",
-            noteId: "Coding Book 2",
-            category: "Coding",
-        },
-    ],
-    createNote: (title, category) => {
-        const fixedCategory = category.replace(/%20/g, " ");
+import {
+    getDocs,
+    collection,
+    deleteDoc,
+    doc,
+    updateDoc,
+} from "firebase/firestore";
+import { db } from "@firebase-config";
+import { useAuthStore } from "@store/auth/authStore";
 
-        const newNote = {
-            noteTitle: title,
-            noteBody: "",
-            noteId: nanoid(),
-            category: fixedCategory,
-        };
+const notesRef = collection(db, "notes");
+
+const noteStore = (set, get) => ({
+    notes: [],
+    renderNotes: async () => {
+        const userDetails = useAuthStore.getState().userDetails;
+        const data = await getDocs(notesRef);
+        const filteredData = data.docs
+            .map((doc) => ({
+                ...doc.data(),
+                noteId: doc.id,
+            }))
+            .filter((doc) => doc.author === userDetails.email);
+
         set((state) => ({
             ...state,
-            notes: [...state.notes, newNote],
+            notes: filteredData,
         }));
     },
-    updateNoteTitle: (inputValue, prevNote) => {
+    deleteNote: async (id) => {
+        const noteRef = doc(db, "notes", id);
+        await deleteDoc(noteRef);
+        get().renderNotes();
+    },
+    updateNoteTitle: async (inputValue, prevNote) => {
         const deletePreviousNote = get().notes.filter(
             (note) => note.noteId !== prevNote.noteId
         );
@@ -40,12 +44,19 @@ const noteStore = (set, get) => ({
             lastEdited: get().getLastEdited(),
         };
 
+        try {
+            const noteRef = doc(db, "notes", prevNote.noteId);
+            await updateDoc(noteRef, updatedNote);
+        } catch (error) {
+            console.error("Error updating title:", error);
+        }
+
         set((state) => ({
             ...state,
             notes: [updatedNote, ...deletePreviousNote],
         }));
     },
-    updateNoteBody: (inputValue, prevNote) => {
+    updateNoteBody: async (inputValue, prevNote) => {
         const deletePreviousNote = get().notes.filter(
             (note) => note.noteId !== prevNote.noteId
         );
@@ -54,6 +65,13 @@ const noteStore = (set, get) => ({
             noteBody: inputValue,
             lastEdited: get().getLastEdited(),
         };
+
+        try {
+            const noteRef = doc(db, "notes", prevNote.noteId);
+            await updateDoc(noteRef, updatedNote);
+        } catch (error) {
+            console.error("Error updating title:", error);
+        }
 
         set((state) => ({
             ...state,

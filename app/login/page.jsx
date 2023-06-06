@@ -1,11 +1,11 @@
 "use client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import SignInForm from "@app/components/SignInForm";
 import SignUpForm from "@app/components/SignUpForm";
 
-import { useRouter } from "next/navigation";
-
+// import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase-config";
@@ -13,11 +13,10 @@ import { useAuthStore } from "@store/auth/authStore";
 
 const loginPage = () => {
     const router = useRouter();
-    const [user] = useAuthState(auth);
-
     const [showSignup, setShowSignup] = useState(false);
-    const googleProvider = new GoogleAuthProvider();
 
+    const [user] = useAuthState(auth);
+    const googleProvider = new GoogleAuthProvider();
     const checkAuthChanges = useAuthStore((store) => store.checkAuthChanges);
 
     const googleLogin = () => {

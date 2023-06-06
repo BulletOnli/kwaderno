@@ -16,9 +16,9 @@ const bookmarkStore = (set, get) => ({
         const oldNotes = useNoteStore
             .getState()
             .notes.filter((thisNote) => thisNote.noteId !== note.noteId);
-
-        // Updates the notes and bookmarks state
+        // update the note to make it bookmarked
         useNoteStore.setState({ notes: [updatedNote, ...oldNotes] });
+
         set((state) => ({
             ...state,
             bookmarks: [updatedNote, ...state.bookmarks],
@@ -32,7 +32,7 @@ const bookmarkStore = (set, get) => ({
         const oldNotes = useNoteStore
             .getState()
             .notes.filter((thisNote) => thisNote.noteId !== note.noteId);
-        // Update the notes state
+        // Update the note to remove the bookmarked
         useNoteStore.setState({ notes: [updatedNote, ...oldNotes] });
 
         const updatedBookmarks = get().bookmarks.filter(

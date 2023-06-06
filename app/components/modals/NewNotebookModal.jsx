@@ -12,13 +12,41 @@ import {
     Input,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { nanoid } from "nanoid";
 import { useNotebookStore } from "@store/notebook/notebookStore";
 
+import { db } from "@firebase-config";
+import { addDoc, collection, onSnapshot } from "firebase/firestore";
+
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@store/auth/authStore";
+
 const NewNotebookModal = ({ isOpen, onClose }) => {
+    const router = useRouter();
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+    const notebooksRef = collection(db, "notebooks");
 
-    const createNotebook = useNotebookStore((store) => store.createNotebook);
+    const { userDetails } = useAuthStore();
+    const { renderNotebooks } = useNotebookStore();
+
+    const createNotebook = async () => {
+        try {
+            await addDoc(notebooksRef, {
+                notebookTitle: title,
+                notebookDescription: description,
+                notebookId: nanoid(),
+                author: userDetails.email,
+            });
+            renderNotebooks();
+        } catch (error) {
+            console.log(error);
+        }
+
+        setTimeout(() => {
+            router.push(`/notebooks/${title}`);
+        }, 100);
+    };
 
     return (
         <>
@@ -49,7 +77,7 @@ const NewNotebookModal = ({ isOpen, onClose }) => {
                         <Button
                             colorScheme="blue"
                             onClick={() => {
-                                createNotebook(title, description);
+                                createNotebook();
                                 setTitle("");
                                 setDescription("");
                                 onClose();
