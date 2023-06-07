@@ -30,9 +30,9 @@ const NewNoteModal = ({ isOpen, onClose, params }) => {
             await addDoc(notesRef, {
                 noteTitle: title,
                 noteBody: "",
+                isBookmarked: false,
                 noteId: nanoid(),
                 category: params,
-                isBookmarked: false,
                 author: userDetails.email,
             });
             renderNotes();

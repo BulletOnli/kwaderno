@@ -6,6 +6,7 @@ import {
     Input,
     Button,
     useToast,
+    FormErrorMessage,
 } from "@chakra-ui/react";
 import { BsFacebook, BsGithub } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
@@ -20,8 +21,10 @@ const SignInForm = ({ setShowSignup, googleLogin }) => {
     const router = useRouter();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [isError, setIsError] = useState(false);
 
     const signIn = () => {
+        setIsError(false);
         signInWithEmailAndPassword(auth, email, password)
             .then(() => {
                 router.push("/");
@@ -35,7 +38,9 @@ const SignInForm = ({ setShowSignup, googleLogin }) => {
                     position: "top",
                 });
             })
-            .catch((error) => console.log("wrong email/password"));
+            .catch(() => {
+                setIsError(true);
+            });
     };
 
     return (
@@ -50,22 +55,30 @@ const SignInForm = ({ setShowSignup, googleLogin }) => {
                     Create an account
                 </button>
             </p>
-            <FormControl>
+            <FormControl isInvalid={isError}>
                 <FormLabel>Email address</FormLabel>
                 <Input
+                    id="signUp-email-field"
                     type="email"
                     mb={3}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                 />
-
                 <FormLabel>Password</FormLabel>
                 <Input
+                    id="signUp-password-field"
                     type="password"
                     mb={3}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
+                {isError ? (
+                    <FormErrorMessage mt={-1} mb={3} fontWeight="medium">
+                        Wrong Email or Password
+                    </FormErrorMessage>
+                ) : (
+                    ""
+                )}
                 <Button colorScheme="messenger" w="full" onClick={signIn}>
                     Sign in
                 </Button>

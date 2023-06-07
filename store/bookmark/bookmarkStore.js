@@ -1,47 +1,48 @@
 import { create } from "zustand";
 import { useNoteStore } from "@store/note/noteStore";
+import { useAuthStore } from "@store/auth/authStore";
+
+import {
+    addDoc,
+    collection,
+    doc,
+    getDocs,
+    updateDoc,
+} from "firebase/firestore";
+import { db } from "@firebase-config";
 
 const bookmarkStore = (set, get) => ({
     bookmarks: [],
-    addToBookmark: (note) => {
-        const isExist = get().bookmarks.some(
-            (bookmark) => bookmark.noteId === note.noteId
-        );
-        if (isExist) return;
+    renderBookmarks: async () => {
+        const userDetails = useAuthStore.getState().userDetails;
+        const notesRef = collection(db, "notes");
 
-        const updatedNote = {
-            ...note,
-            isBookmarked: true,
-        };
-        const oldNotes = useNoteStore
-            .getState()
-            .notes.filter((thisNote) => thisNote.noteId !== note.noteId);
-        // update the note to make it bookmarked
-        useNoteStore.setState({ notes: [updatedNote, ...oldNotes] });
+        try {
+            const data = await getDocs(notesRef);
+            const filteredData = data.docs
+                .map((doc) => ({ ...doc.data() }))
+                .filter((doc) => doc.author === userDetails.email);
+            const filteredBookmark = filteredData.filter(
+                (data) => data.isBookmarked
+            );
 
-        set((state) => ({
-            ...state,
-            bookmarks: [updatedNote, ...state.bookmarks],
-        }));
+            set({ bookmarks: filteredBookmark });
+        } catch (error) {
+            console.log(error);
+        }
     },
-    removeBookmark: (note) => {
-        const updatedNote = {
-            ...note,
-            isBookmarked: false,
-        };
-        const oldNotes = useNoteStore
-            .getState()
-            .notes.filter((thisNote) => thisNote.noteId !== note.noteId);
-        // Update the note to remove the bookmarked
-        useNoteStore.setState({ notes: [updatedNote, ...oldNotes] });
+    toggleBookmark: async (note) => {
+        const noteRef = doc(db, "notes", note.noteId);
 
-        const updatedBookmarks = get().bookmarks.filter(
-            (bookmark) => bookmark.noteId !== note.noteId
-        );
-        set((state) => ({
-            ...state,
-            bookmarks: updatedBookmarks,
-        }));
+        try {
+            await updateDoc(noteRef, {
+                isBookmarked: !note.isBookmarked,
+                noteId: note.noteId,
+            });
+            useNoteStore.getState().renderNotes(); //para mag render yung bookmark icon
+        } catch (error) {
+            console.log(error);
+        }
     },
 });
 

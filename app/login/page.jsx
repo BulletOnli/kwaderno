@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import SignInForm from "@app/components/SignInForm";
 import SignUpForm from "@app/components/SignUpForm";
 
-// import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase-config";

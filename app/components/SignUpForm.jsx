@@ -7,6 +7,8 @@ import {
     Input,
     Button,
     useToast,
+    FormErrorMessage,
+    FormHelperText,
 } from "@chakra-ui/react";
 import { BsFacebook, BsGithub } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
@@ -18,8 +20,10 @@ const SignUpForm = ({ setShowSignup, googleLogin }) => {
     const toast = useToast();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [isError, setIsError] = useState(false);
 
     const signUp = () => {
+        setIsError(false);
         createUserWithEmailAndPassword(auth, email, password)
             .then(() => {
                 setShowSignup(false);
@@ -32,8 +36,8 @@ const SignUpForm = ({ setShowSignup, googleLogin }) => {
                     position: "top",
                 });
             })
-            .catch((error) => {
-                console.log(error);
+            .catch(() => {
+                setIsError(true);
             });
     };
 
@@ -51,22 +55,31 @@ const SignUpForm = ({ setShowSignup, googleLogin }) => {
                     Sign in
                 </button>
             </p>
-            <FormControl>
+            <FormControl isInvalid={isError}>
                 <FormLabel>Email address</FormLabel>
                 <Input
+                    id="signUp-email-field"
                     type="email"
                     mb={3}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                 />
-
                 <FormLabel>Password</FormLabel>
                 <Input
+                    id="signUp-password-field"
                     type="password"
-                    mb={3}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
+                {isError ? (
+                    <FormErrorMessage mb={3} fontWeight="medium">
+                        Invalid Email/Password
+                    </FormErrorMessage>
+                ) : (
+                    <FormHelperText mb={3}>
+                        Password must be at least 8 characters.
+                    </FormHelperText>
+                )}
                 <Button colorScheme="messenger" w="full" onClick={signUp}>
                     Sign up
                 </Button>

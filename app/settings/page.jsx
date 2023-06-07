@@ -1,16 +1,36 @@
 "use client";
-import { Avatar, Button, Icon } from "@chakra-ui/react";
+import { Avatar, Button, Icon, useToast } from "@chakra-ui/react";
 import { BsFillShieldLockFill, BsFillBellFill } from "react-icons/bs";
 import { AiOutlineUserSwitch } from "react-icons/ai";
 import { MdOutlineHelp } from "react-icons/md";
-import { useEffect, useState } from "react";
 import SettingsTab from "@app/components/SettingsTab";
 
 import { useAuthStore } from "@store/auth/authStore";
+import { signOut } from "firebase/auth";
+import { useRouter } from "next/navigation";
+import { auth } from "@firebase-config";
 
 const SettingsPage = () => {
+    const router = useRouter();
+    const toast = useToast();
     const userDetails = useAuthStore((store) => store.userDetails);
     const { displayName, email, photoURL } = userDetails;
+
+    const userSignOut = () => {
+        signOut(auth)
+            .then(() => {
+                toast({
+                    title: "Logout successful",
+                    description: "You have been logged out.",
+                    status: "warning",
+                    duration: 3000,
+                    isClosable: true,
+                    position: "top",
+                });
+            })
+            .catch((err) => console.log(err));
+        router.push("/login");
+    };
 
     return (
         <div className="relative w-full flex justify-center items-center">
@@ -35,6 +55,7 @@ const SettingsPage = () => {
                         size="lg"
                         boxShadow="sm"
                         leftIcon={<AiOutlineUserSwitch size={22} />}
+                        onClick={userSignOut}
                     >
                         Switch Account
                     </Button>

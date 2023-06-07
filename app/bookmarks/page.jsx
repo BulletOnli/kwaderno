@@ -3,9 +3,14 @@ import { FaTrash } from "react-icons/fa";
 import { BsDot } from "react-icons/bs";
 import { useBookmarkStore } from "@store/bookmark/bookmarkStore";
 import Link from "next/link";
+import { useEffect } from "react";
 
 const BookmarksPage = () => {
-    const { bookmarks, removeBookmark } = useBookmarkStore();
+    const { bookmarks, toggleBookmark, renderBookmarks } = useBookmarkStore();
+
+    useEffect(() => {
+        renderBookmarks();
+    }, []);
 
     return (
         <div className="w-full flex flex-col items-center p-8">
@@ -47,7 +52,10 @@ const BookmarksPage = () => {
                             </span>
                             <FaTrash
                                 className="text-lg cursor-pointer"
-                                onClick={() => removeBookmark(bookmark)}
+                                onClick={() => {
+                                    toggleBookmark(bookmark);
+                                    renderBookmarks();
+                                }}
                             />
                         </div>
                     ))

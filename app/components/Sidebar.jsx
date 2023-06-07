@@ -116,7 +116,7 @@ const Sidebar = () => {
                         </AccordionButton>
 
                         <AccordionPanel pb={0}>
-                            <NotebooksTab />
+                            <NotebooksTab onOpen={onOpen} />
                         </AccordionPanel>
                     </AccordionItem>
                 </Accordion>

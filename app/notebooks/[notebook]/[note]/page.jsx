@@ -10,14 +10,18 @@ import { useEffect, useState } from "react";
 const NotePage = ({ params }) => {
     const noteId = params.note.replace(/%20/g, " ");
     const router = useRouter();
-
     const { notes, updateNoteTitle, updateNoteBody, deleteNote, renderNotes } =
         useNoteStore();
+    const { toggleBookmark, renderBookmarks } = useBookmarkStore();
     const filteredNote = notes.find((note) => note.noteId === noteId);
-    const { addToBookmark, removeBookmark } = useBookmarkStore();
 
     const [title, setTitle] = useState(filteredNote.noteTitle);
     const [body, setBody] = useState(filteredNote.noteBody);
+
+    const handleBookmarkToggle = () => {
+        toggleBookmark(filteredNote);
+        renderBookmarks();
+    };
 
     return (
         <div className="relative w-full flex flex-col gap-6 m-10 p-10 border-[2px] border-[#9F9F9F]">
@@ -44,18 +48,12 @@ const NotePage = ({ params }) => {
 
                 <div className="flex gap-6">
                     <button className="text-2xl">
-                        {filteredNote?.isBookmarked ? (
+                        {filteredNote.isBookmarked ? (
                             <BsFillBookmarkFill
-                                onClick={() => {
-                                    removeBookmark(filteredNote);
-                                }}
+                                onClick={handleBookmarkToggle}
                             />
                         ) : (
-                            <BsBookmark
-                                onClick={() => {
-                                    addToBookmark(filteredNote);
-                                }}
-                            />
+                            <BsBookmark onClick={handleBookmarkToggle} />
                         )}
                     </button>
                     <button
