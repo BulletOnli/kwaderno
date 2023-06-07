@@ -12,7 +12,7 @@ const firebaseConfig = {
     appId: process.env.NEXT_PUBLIC_APP_ID,
 };
 
-export const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig, { apiKey: "test" });
 export const auth = getAuth();
 
 export const db = getFirestore(app);
