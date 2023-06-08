@@ -13,6 +13,7 @@ import { useToast } from "@chakra-ui/react";
 
 const loginPage = () => {
     const router = useRouter();
+    const toast = useToast();
     const [showSignup, setShowSignup] = useState(false);
 
     const [user] = useAuthState(auth);
@@ -20,7 +21,6 @@ const loginPage = () => {
     const checkAuthChanges = useAuthStore((store) => store.checkAuthChanges);
 
     const googleLogin = () => {
-        const toast = useToast();
         signInWithPopup(auth, googleProvider)
             .then(() => {
                 toast({
