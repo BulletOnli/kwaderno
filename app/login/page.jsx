@@ -9,6 +9,7 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase-config";
 import { useAuthStore } from "@store/auth/authStore";
+import { useToast } from "@chakra-ui/react";
 
 const loginPage = () => {
     const router = useRouter();
@@ -19,8 +20,18 @@ const loginPage = () => {
     const checkAuthChanges = useAuthStore((store) => store.checkAuthChanges);
 
     const googleLogin = () => {
+        const toast = useToast();
         signInWithPopup(auth, googleProvider)
             .then(() => {
+                toast({
+                    title: "Login successful",
+                    description:
+                        "Welcome back! You have successfully logged in.",
+                    status: "success",
+                    duration: 3000,
+                    isClosable: true,
+                    position: "top",
+                });
                 router.push("/");
             })
             .catch((error) => console.log(error));
