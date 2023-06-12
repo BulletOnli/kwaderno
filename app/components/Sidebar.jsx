@@ -79,7 +79,7 @@ const Sidebar = () => {
         <div className="w-[20rem] text-white min-w-[20rem] h-screen bg-[#202123] flex flex-col items-center p-4">
             <div className="w-full flex flex-col items-center">
                 <h1 className="text-3xl font-bold mb-6">
-                    <Link href="/">Kwaderno</Link>
+                    <Link href="/">Kwadernote</Link>
                 </h1>
                 <Button colorScheme="blue" w="full" size="md" onClick={onOpen}>
                     Create Notebook
