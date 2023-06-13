@@ -12,7 +12,7 @@ const NotebookPage = ({ params }) => {
     const notebookName = params.notebook.replace(/%20/g, " ");
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const { notes, renderNotes } = useNoteStore();
+    const { notes, renderNotes, deleteAllNotes } = useNoteStore();
     const filteredNotes = notes.filter(
         (note) => note.category === params.notebook
     );
@@ -54,6 +54,7 @@ const NotebookPage = ({ params }) => {
                         boxShadow="base"
                         onClick={() => {
                             deleteNotebook(thisNotebook.notebookId);
+                            deleteAllNotes(thisNotebook.notebookTitle);
                             router.push("/");
                         }}
                     >

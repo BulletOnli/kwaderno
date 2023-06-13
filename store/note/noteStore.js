@@ -34,6 +34,19 @@ const noteStore = (set, get) => ({
         await deleteDoc(noteRef);
         get().renderNotes();
     },
+    deleteAllNotes: async (category) => {
+        const data = await getDocs(notesRef);
+        const filteredData = data.docs
+            .map((doc) => ({
+                ...doc.data(),
+                noteId: doc.id,
+            }))
+            .filter((data) => data.category === category);
+
+        filteredData.forEach((data) => {
+            get().deleteNote(data.noteId);
+        });
+    },
     updateNoteTitle: async (inputValue, prevNote) => {
         const deletePreviousNote = get().notes.filter(
             (note) => note.noteId !== prevNote.noteId
