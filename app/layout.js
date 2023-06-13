@@ -1,5 +1,4 @@
 "use client";
-
 import Sidebar from "@app/components/Sidebar";
 import { ChakraProvider } from "@chakra-ui/react";
 import "./globals.css";

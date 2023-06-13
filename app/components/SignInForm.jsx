@@ -49,7 +49,7 @@ const SignInForm = ({ setShowSignup, googleLogin }) => {
             <p className="w-full font-semibold mb-6">
                 New user?{" "}
                 <button
-                    className="text-blue-600"
+                    className="text-blue-600 hover:underline"
                     onClick={() => setShowSignup(true)}
                 >
                     Create an account

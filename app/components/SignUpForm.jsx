@@ -49,7 +49,7 @@ const SignUpForm = ({ setShowSignup, googleLogin }) => {
             <p className="w-full flex gap-1 font-semibold mb-6">
                 Already have an account?
                 <button
-                    className="text-blue-600"
+                    className="text-blue-600 hover:underline"
                     onClick={() => setShowSignup(false)}
                 >
                     Sign in
@@ -77,7 +77,7 @@ const SignUpForm = ({ setShowSignup, googleLogin }) => {
                     </FormErrorMessage>
                 ) : (
                     <FormHelperText mb={3}>
-                        Password must be at least 8 characters.
+                        Password must be at least 6 characters.
                     </FormHelperText>
                 )}
                 <Button colorScheme="messenger" w="full" onClick={signUp}>

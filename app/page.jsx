@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { BsFacebook, BsInstagram, BsGithub, BsTwitter } from "react-icons/bs";
+import { BsFacebook, BsInstagram, BsGithub, BsTiktok } from "react-icons/bs";
 
 const Homepage = () => {
     return (
@@ -19,7 +19,7 @@ const Homepage = () => {
                         </p>
 
                         <div className="w-full flex flex-col items-center justify-center mt-6">
-                            <p className="font-medium mb-3">Follow us:</p>
+                            <p className="font-medium mb-3">Follow me:</p>
                             <div className="w-full text-xl flex items-center justify-center gap-4">
                                 <Link
                                     href="https://www.facebook.com/Solidbullet"
@@ -39,7 +39,12 @@ const Homepage = () => {
                                 >
                                     <BsGithub />
                                 </Link>
-                                <BsTwitter />
+                                <Link
+                                    href="https://www.tiktok.com/@bulletonli"
+                                    target="_blank"
+                                >
+                                    <BsTiktok />
+                                </Link>
                             </div>
                         </div>
                     </div>

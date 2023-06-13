@@ -160,6 +160,10 @@ const Sidebar = () => {
                 </Button>
             </Flex>
 
+            <small className="mt-1 mb-[-7px] text-gray-300">
+                Made with ♥ by Bullet
+            </small>
+
             <NewNotebookModal isOpen={isOpen} onClose={onClose} />
         </div>
     );

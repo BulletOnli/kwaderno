@@ -51,7 +51,7 @@ const NewNoteModal = ({ isOpen, onClose, params }) => {
                     <ModalBody>
                         <FormControl>
                             <Input
-                                placeholder="Input note title"
+                                placeholder="Note title"
                                 autoComplete="off"
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
