@@ -55,13 +55,21 @@ const SignUpForm = ({ setShowSignup, googleLogin }) => {
                     Sign in
                 </button>
             </p>
-            <FormControl isInvalid={isError}>
+            <FormControl
+                as="form"
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    signUp();
+                }}
+                isInvalid={isError}
+            >
                 <FormLabel>Email address</FormLabel>
                 <Input
                     id="signUp-email-field"
                     type="email"
                     mb={3}
                     value={email}
+                    required
                     onChange={(e) => setEmail(e.target.value)}
                 />
                 <FormLabel>Password</FormLabel>
@@ -69,6 +77,7 @@ const SignUpForm = ({ setShowSignup, googleLogin }) => {
                     id="signUp-password-field"
                     type="password"
                     value={password}
+                    required
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 {isError ? (
@@ -80,7 +89,7 @@ const SignUpForm = ({ setShowSignup, googleLogin }) => {
                         Password must be at least 6 characters.
                     </FormHelperText>
                 )}
-                <Button colorScheme="messenger" w="full" onClick={signUp}>
+                <Button type="submit" colorScheme="messenger" w="full">
                     Sign up
                 </Button>
             </FormControl>

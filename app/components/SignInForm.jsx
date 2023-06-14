@@ -7,6 +7,8 @@ import {
     Button,
     useToast,
     FormErrorMessage,
+    FormHelperText,
+    useDisclosure,
 } from "@chakra-ui/react";
 import { BsFacebook, BsGithub } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
@@ -15,6 +17,7 @@ import { useEffect, useState } from "react";
 
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase-config";
+import ForgetPasswordModal from "./modals/ForgetPasswordModal";
 
 const SignInForm = ({ setShowSignup, googleLogin }) => {
     const toast = useToast();
@@ -22,6 +25,7 @@ const SignInForm = ({ setShowSignup, googleLogin }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isError, setIsError] = useState(false);
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     const signIn = () => {
         setIsError(false);
@@ -55,7 +59,14 @@ const SignInForm = ({ setShowSignup, googleLogin }) => {
                     Create an account
                 </button>
             </p>
-            <FormControl isInvalid={isError}>
+            <FormControl
+                as="form"
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    signIn();
+                }}
+                isInvalid={isError}
+            >
                 <FormLabel>Email address</FormLabel>
                 <Input
                     id="signUp-email-field"
@@ -68,18 +79,26 @@ const SignInForm = ({ setShowSignup, googleLogin }) => {
                 <Input
                     id="signUp-password-field"
                     type="password"
-                    mb={3}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 {isError ? (
-                    <FormErrorMessage mt={-1} mb={3} fontWeight="medium">
+                    <FormErrorMessage mb={3} fontWeight="medium">
                         Wrong Email or Password
                     </FormErrorMessage>
                 ) : (
-                    ""
+                    <FormHelperText
+                        textAlign="right"
+                        mb={3}
+                        color="blue.700"
+                        _hover={{ textDecoration: "underline" }}
+                        cursor="pointer"
+                        onClick={onOpen}
+                    >
+                        Forget Password?
+                    </FormHelperText>
                 )}
-                <Button colorScheme="messenger" w="full" onClick={signIn}>
+                <Button type="submit" colorScheme="messenger" w="full">
                     Sign in
                 </Button>
             </FormControl>
@@ -119,6 +138,8 @@ const SignInForm = ({ setShowSignup, googleLogin }) => {
             >
                 Continue with Github
             </Button>
+
+            <ForgetPasswordModal isOpen={isOpen} onClose={onClose} />
         </div>
     );
 };
