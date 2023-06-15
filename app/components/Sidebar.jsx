@@ -76,7 +76,7 @@ const Sidebar = () => {
     }, [user]);
 
     return (
-        <div className="w-[20rem] text-white min-w-[20rem] h-screen bg-[#202123] flex flex-col items-center p-4">
+        <div className="w-[25rem] text-white h-screen bg-[#202123] flex flex-col items-center p-4">
             <div className="w-full flex flex-col items-center">
                 <h1 className="text-3xl font-bold mb-6">
                     <Link href="/">Kwadernote</Link>
@@ -161,7 +161,14 @@ const Sidebar = () => {
             </Flex>
 
             <small className="mt-1 mb-[-7px] text-gray-300">
-                Made with ♥ by Bullet
+                Made with ♥ by{" "}
+                <Link
+                    href="https://github.com/BulletOnli"
+                    target="_blank"
+                    className="hover:underline"
+                >
+                    Gemmuel
+                </Link>
             </small>
 
             <NewNotebookModal isOpen={isOpen} onClose={onClose} />

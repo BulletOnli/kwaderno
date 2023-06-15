@@ -42,7 +42,11 @@ const NotePage = ({ params }) => {
                         }}
                     />
                     <small className="ml-8 mt-2 text-gray-300 font-medium">
-                        {`Last Edited: ${filteredNote?.lastEdited}`}
+                        {`Last Edited: ${
+                            filteredNote.lastEdited
+                                ? filteredNote.lastEdited
+                                : "N/A"
+                        }`}
                     </small>
                 </div>
 

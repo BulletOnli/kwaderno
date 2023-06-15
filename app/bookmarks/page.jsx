@@ -46,7 +46,9 @@ const BookmarksPage = () => {
                                         {bookmark.noteTitle}
                                     </h2>
                                     <small className="ml-5 text-gray-200">
-                                        From: {bookmark.category} Notebook
+                                        From:{" "}
+                                        {bookmark.category.replace(/%20/g, " ")}{" "}
+                                        Notebook
                                     </small>
                                 </Link>
                             </span>
